@@ -36,13 +36,21 @@ export function Header() {
           </motion.span>
         </a>
 
-        <Button
-          variant="ghost"
-          onClick={scrollToContacts}
-          className="font-telemetry h-11 min-w-[10rem] justify-center rounded-full px-4 text-xs uppercase text-foreground hover:bg-foreground hover:text-background sm:px-6"
-        >
-          {siteData.feedback}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            onClick={scrollToContacts}
+            className="font-telemetry h-11 min-w-[10rem] justify-center rounded-full px-4 text-xs uppercase text-foreground hover:bg-foreground hover:text-background sm:px-6"
+          >
+            {siteData.feedback}
+          </Button>
+          <span
+            aria-label="Номер один"
+            className="font-xanmono grid size-11 place-items-center rounded-full border border-[#3c3c38] text-sm text-[#f5c2c8]"
+          >
+            1
+          </span>
+        </div>
       </div>
     </header>
   );
