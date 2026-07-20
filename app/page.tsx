@@ -11,16 +11,23 @@ export default function Home() {
     <main className="min-h-screen overflow-hidden">
       <Header />
       <div className="px-4 sm:px-6 lg:px-8">
-        <section className="relative flex min-h-[56vh] flex-col justify-between pb-8 pt-0 sm:min-h-[62vh]">
-          <HeroArtifact />
-          <div className="grid items-end gap-6 lg:grid-cols-12">
-            <div className="relative lg:col-span-8">
-              <div className="absolute -inset-8 -z-10 bg-[radial-gradient(ellipse_at_left,rgba(245,194,200,0.12),transparent_64%)]" />
-              <p className="text-balance max-w-5xl text-[clamp(1.9rem,4.2vw,4.7rem)] font-normal leading-[0.98] tracking-[-0.055em]">{siteData.heroNote}</p>
-            </div>
-            <div className="lg:col-span-3 lg:col-start-10"><HeroButtons /></div>
+        <section className="relative grid min-h-[clamp(22rem,62vh,38rem)] grid-cols-1 gap-6 pb-8 pt-2 lg:grid-cols-12 lg:grid-rows-[1fr_auto]">
+          <div className="relative order-1 flex min-h-[18rem] items-center lg:col-span-6 lg:row-span-2 lg:min-h-0">
+            <div className="absolute -inset-8 -z-10 bg-[radial-gradient(ellipse_at_left,rgba(245,194,200,0.12),transparent_64%)]" />
+            <h1 className="font-xanmono text-balance max-w-[45rem] text-[clamp(2.25rem,3.75vw,3.75rem)] font-normal leading-[0.96] tracking-[-0.055em]">
+              {siteData.heroNote}
+            </h1>
+          </div>
+
+          <div className="order-2 flex min-h-[18rem] items-center justify-center lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:min-h-0">
+            <HeroArtifact />
+          </div>
+
+          <div className="order-3 lg:col-span-3 lg:col-start-10 lg:row-start-2">
+            <HeroButtons />
           </div>
         </section>
+
         <ProjectsSection />
         <PriceSection />
         <Footer />

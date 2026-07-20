@@ -6,11 +6,18 @@ import { siteData } from "@/lib/data";
 
 export function HeroButtons() {
   const scrollTo = (target: string) => document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
+
   return (
-    <nav aria-label="Навигация по странице" className="flex flex-wrap gap-1.5 lg:flex-col lg:items-end">
+    <nav aria-label="Навигация по странице" className="grid w-full gap-0">
       {siteData.navigation.map((item) => (
-        <Button key={item.target} variant="ghost" onClick={() => scrollTo(item.target)} className="font-telemetry group h-10 rounded-full px-4 text-[11px] uppercase text-foreground hover:bg-foreground hover:text-background">
-          {item.label}<ArrowDownRight className="ml-3 size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+        <Button
+          key={item.target}
+          variant="ghost"
+          onClick={() => scrollTo(item.target)}
+          className="font-telemetry group h-12 w-full justify-between rounded-none border-b border-[#3c3c38] px-0 text-xs uppercase text-foreground hover:bg-transparent hover:text-[#f5c2c8]"
+        >
+          {item.label}
+          <ArrowDownRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
         </Button>
       ))}
     </nav>
