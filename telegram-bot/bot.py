@@ -21,6 +21,8 @@ GITHUB_API_BASE = "https:" + "//api.github.com"
 WHISPER_MODEL = os.getenv("WHISPER_MODEL", "small").strip()
 SETUP_CODE = os.getenv("SETUP_CODE", "").strip()
 OWNER_FILE = BASE_DIR / "owner.json"
+ANIMATION_FRAMES = ("⏳", "⌛")
+ANIMATION_INTERVAL = 0.8
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
 logger = logging.getLogger("kila-telegram-bot")
@@ -82,6 +84,31 @@ def create_github_issue(instruction: str, source: str):
     return response.json()["html_url"]
 
 
+async def run_animated_stage(status, label: str, operation):
+    """Animate the bot's status message while preserving the user's source message."""
+    task = asyncio.create_task(operation)
+    frame_index = 0
+
+    while not task.done():
+        try:
+            await status.edit_text(f"{ANIMATION_FRAMES[frame_index]} {label}")
+        except Exception:
+            logger.debug("Не удалось обновить анимацию статуса", exc_info=True)
+        frame_index = (frame_index + 1) % len(ANIMATION_FRAMES)
+
+        try:
+            await asyncio.wait_for(asyncio.shield(task), timeout=ANIMATION_INTERVAL)
+        except asyncio.TimeoutError:
+            pass
+
+    return await task
+
+
+async def download_media(context, media, destination: Path):
+    telegram_file = await context.bot.get_file(media.file_id)
+    await telegram_file.download_to_drive(custom_path=str(destination))
+
+
 async def require_owner(update: Update):
     user = update.effective_user
     if user and is_owner(user.id):
@@ -127,22 +154,33 @@ async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     message = update.effective_message
     media = message.voice or message.audio
-    status = await message.reply_text("Получил голосовое. Распознаю текст…")
+    status = await message.reply_text("🎙️ Получил голосовое…")
 
     try:
-        telegram_file = await context.bot.get_file(media.file_id)
         suffix = ".ogg" if message.voice else Path(media.file_name or "audio.mp3").suffix
         with tempfile.TemporaryDirectory(prefix="kila-voice-") as temp_dir:
             audio_path = Path(temp_dir) / f"voice{suffix}"
-            await telegram_file.download_to_drive(custom_path=str(audio_path))
-            transcript = await asyncio.to_thread(transcribe_audio, str(audio_path))
+            await run_animated_stage(
+                status,
+                "Загружаю аудио…",
+                download_media(context, media, audio_path),
+            )
+            transcript = await run_animated_stage(
+                status,
+                "Распознаю речь…",
+                asyncio.to_thread(transcribe_audio, str(audio_path)),
+            )
 
         if not transcript:
             await status.edit_text("Не удалось распознать речь. Попробуй записать голосовое ещё раз.")
             return
 
-        issue_url = await asyncio.to_thread(create_github_issue, transcript, "голосовое сообщение")
-        await status.edit_text(f"Текст:\n\n{transcript}\n\nЗадача создана: {issue_url}")
+        issue_url = await run_animated_stage(
+            status,
+            "Создаю задачу в GitHub…",
+            asyncio.to_thread(create_github_issue, transcript, "голосовое сообщение"),
+        )
+        await status.edit_text(f"✅ Текст:\n\n{transcript}\n\nЗадача создана: {issue_url}")
     except Exception as error:
         logger.exception("Ошибка обработки голосового")
         await status.edit_text(f"Ошибка: {error}")
@@ -156,10 +194,14 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not instruction:
         return
 
-    status = await update.effective_message.reply_text("Создаю задачу в GitHub…")
+    status = await update.effective_message.reply_text("📝 Получил текстовую задачу…")
     try:
-        issue_url = await asyncio.to_thread(create_github_issue, instruction, "текстовое сообщение")
-        await status.edit_text(f"Задача создана: {issue_url}")
+        issue_url = await run_animated_stage(
+            status,
+            "Создаю задачу в GitHub…",
+            asyncio.to_thread(create_github_issue, instruction, "текстовое сообщение"),
+        )
+        await status.edit_text(f"✅ Задача создана: {issue_url}")
     except Exception as error:
         logger.exception("Ошибка создания задачи")
         await status.edit_text(f"Ошибка: {error}")
