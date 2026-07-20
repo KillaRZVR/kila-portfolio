@@ -48,7 +48,8 @@ echo.
 
 :sync
 set "BEHIND=0"
-set "DIRTY="n
+set "DIRTY="
+
 git fetch origin main >nul 2>&1
 if errorlevel 1 (
   echo [%time%] Нет соединения с GitHub. Повторю позже.
