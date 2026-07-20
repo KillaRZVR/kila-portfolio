@@ -1,4 +1,4 @@
-import getpass
+import os
 import secrets
 import sys
 import tempfile
@@ -69,9 +69,12 @@ def main():
         self_test()
         return
 
-    print("\nТокены вводятся скрыто и сохраняются только в telegram-bot/.env.")
-    telegram_token = getpass.getpass("Вставь токен от BotFather: ").strip()
-    github_token = getpass.getpass("Вставь GitHub token: ").strip()
+    print("\nВставь токены обычным Ctrl+V и нажми Enter.")
+    print("После ввода окно очистится, чтобы токены не оставались на экране.\n")
+    telegram_token = input("Вставь токен от BotFather: ").strip()
+    github_token = input("Вставь GitHub token: ").strip()
+
+    os.system("cls" if os.name == "nt" else "clear")
 
     if not telegram_token:
         raise ValueError("Токен Telegram не введён")
