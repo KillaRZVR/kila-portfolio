@@ -1,25 +1,26 @@
 # KILA Portfolio
 
-## Локальный запуск
+Одностраничное портфолио на Next.js 14, Tailwind CSS и Framer Motion.
+
+## Автоматический локальный запуск
+
+После клонирования репозитория дважды нажмите `auto-sync.bat`.
+
+Скрипт автоматически:
+
+- установит зависимости при первом запуске;
+- запустит сайт на http://localhost:3000;
+- каждые 10 секунд проверит GitHub;
+- загрузит новые изменения;
+- обновит зависимости и перезапустит страницу через Next.js.
+
+Не закрывайте окна `KILA — автоматическая синхронизация` и `KILA Dev Server` во время работы.
+
+## Обычный запуск
 
 ```bash
 npm install
 npm run dev
 ```
 
-Откройте http://localhost:3000. Проект не публикуется автоматически и работает только локально.
-
-## Создание с нуля
-
-```bash
-npx create-next-app@latest my-portfolio --typescript --tailwind --eslint --app
-cd my-portfolio
-npx shadcn@latest init
-npx shadcn@latest add button card separator
-npm install framer-motion next-themes lucide-react
-npm run dev
-```
-
 Все тексты меняются в `lib/data.js`.
-
-Все компоненты с хуками или анимацией делай клиентскими (`use client`), остальные можно серверными.
