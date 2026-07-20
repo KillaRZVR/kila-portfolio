@@ -6,3 +6,7 @@ out
 .DS_Store
 .env*.local
 public/fonts/*.ttf
+telegram-bot/.env
+telegram-bot/.venv/
+telegram-bot/owner.json
+telegram-bot/__pycache__/
