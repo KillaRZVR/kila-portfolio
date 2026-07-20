@@ -5,11 +5,23 @@ const TELEGRAM_API = "https:" + "//api.telegram.org";
 const TELEGRAM_FILE_API = "https:" + "//api.telegram.org/file";
 const GROQ_API = "https:" + "//api.groq.com/openai/v1";
 const GITHUB_API = "https:" + "//api.github.com";
+const ALLOWED_AUDIO_EXTENSIONS = new Set([
+  ".flac", ".mp3", ".mp4", ".mpeg", ".mpga", ".m4a", ".ogg", ".opus", ".wav", ".webm",
+]);
 
 function env(name, required = true) {
   const value = process.env[name]?.trim();
   if (required && !value) throw new Error(`Missing environment variable: ${name}`);
   return value || "";
+}
+
+function normalizeAudioFilename(filePath = "", preferredName = "") {
+  const sourceName = preferredName || filePath.split("/").pop() || "voice.ogg";
+  const dotIndex = sourceName.lastIndexOf(".");
+  let extension = dotIndex >= 0 ? sourceName.slice(dotIndex).toLowerCase() : ".ogg";
+  if (extension === ".oga") extension = ".ogg";
+  if (!ALLOWED_AUDIO_EXTENSIONS.has(extension)) extension = ".ogg";
+  return `telegram-audio${extension}`;
 }
 
 async function telegramApi(method, payload) {
@@ -29,7 +41,7 @@ async function sendMessage(chatId, text) {
   return telegramApi("sendMessage", { chat_id: chatId, text: safeText, disable_web_page_preview: true });
 }
 
-async function transcribeTelegramFile(fileId) {
+async function transcribeTelegramFile(fileId, preferredName = "") {
   const token = env("TELEGRAM_BOT_TOKEN");
   const groqKey = env("GROQ_API_KEY");
   const file = await telegramApi("getFile", { file_id: fileId });
@@ -37,8 +49,9 @@ async function transcribeTelegramFile(fileId) {
   if (!download.ok) throw new Error(`Не удалось скачать голосовое: ${download.status}`);
 
   const audio = await download.blob();
+  const filename = normalizeAudioFilename(file.file_path, preferredName);
   const form = new FormData();
-  form.append("file", audio, file.file_path?.split("/").pop() || "voice.ogg");
+  form.append("file", audio, filename);
   form.append("model", "whisper-large-v3-turbo");
   form.append("response_format", "json");
   form.append("language", "ru");
@@ -135,7 +148,9 @@ export async function POST(request) {
 
     if (message.voice?.file_id || message.audio?.file_id) {
       await sendMessage(chatId, "Получил голосовое. Распознаю через Groq Whisper…");
-      instruction = await transcribeTelegramFile(message.voice?.file_id || message.audio.file_id);
+      const fileId = message.voice?.file_id || message.audio.file_id;
+      const preferredName = message.voice ? "voice.ogg" : (message.audio?.file_name || "audio.mp3");
+      instruction = await transcribeTelegramFile(fileId, preferredName);
       source = "голосовое сообщение";
       if (!instruction) throw new Error("Не удалось распознать речь");
     }
