@@ -11,15 +11,15 @@ function scrollToContacts() {
 export function Header() {
   return (
     <header id="top" className="relative z-40 px-4 pt-4 sm:px-6 sm:pt-5 lg:px-8">
-      <div className="flex items-start justify-between gap-6">
-        <a href="#top" className="block w-[58vw] sm:w-[36vw] lg:w-[25vw] lg:max-w-[28rem]" aria-label="На главную">
-          <span className="flex overflow-hidden text-[clamp(4.8rem,10vw,9.5rem)] font-normal leading-[0.72] tracking-[-0.11em]">
+      <div className="flex items-start justify-between gap-3 sm:gap-6">
+        <a href="#top" className="font-xanmono block w-[52vw] sm:w-[36vw] lg:w-[25vw] lg:max-w-[28rem]" aria-label="На главную">
+          <span className="flex pb-2 text-[clamp(4.5rem,9vw,8.8rem)] font-normal leading-[0.84] tracking-[-0.09em]">
             {siteData.brand.split("").map((letter, index) => (
               <motion.span
                 key={`${letter}-${index}`}
-                initial={{ y: "115%", rotate: index % 2 ? 4 : -3 }}
-                animate={{ y: 0, rotate: index === 2 ? -5 : index % 2 ? 1 : -1 }}
-                transition={{ duration: 0.7, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ y: "105%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.65, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
                 className={index === 2 ? "rose-glow" : ""}
               >
                 {letter}
@@ -27,10 +27,10 @@ export function Header() {
             ))}
           </span>
           <motion.span
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 0.5 }}
-            className="font-telemetry mt-3 block max-w-60 text-[12px] uppercase leading-tight text-muted-foreground sm:text-xs"
+            transition={{ delay: 0.45, duration: 0.45 }}
+            className="font-xanmono mt-1 block max-w-64 text-[10px] uppercase leading-tight text-muted-foreground sm:text-xs"
           >
             {siteData.eyebrow}
           </motion.span>
@@ -39,7 +39,7 @@ export function Header() {
         <Button
           variant="ghost"
           onClick={scrollToContacts}
-          className="font-telemetry h-11 min-w-[10rem] justify-center rounded-full px-4 text-xs uppercase text-foreground hover:bg-foreground hover:text-background sm:px-6"
+          className="font-xanmono h-12 min-w-[8rem] justify-center rounded-full border border-[#3c3c38] px-3 text-[10px] uppercase text-foreground hover:bg-foreground hover:text-background sm:h-14 sm:min-w-[13rem] sm:px-8 sm:text-sm"
         >
           {siteData.feedback}
         </Button>
