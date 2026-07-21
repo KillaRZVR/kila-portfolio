@@ -90,13 +90,13 @@ export function RoadmapSection() {
                           gridColumn: `${item.start} / ${item.end + 1}`,
                           gridRow: index + 1,
                         }}
-                        className={`relative z-10 flex min-h-11 items-center overflow-hidden border px-3 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f5c2c8] ${
+                        className={`relative z-10 flex min-h-11 items-center border px-2 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f5c2c8] ${
                           isActive
                             ? "border-[#f5c2c8] bg-[#f5c2c8] text-[#12130f]"
                             : "border-[#3c3c38] bg-[#1b1c18] text-[#e4dfda] hover:border-[#f5c2c8]"
                         }`}
                       >
-                        <span className="truncate text-[11px] uppercase tracking-[-0.03em]">
+                        <span className="text-[10px] uppercase leading-tight tracking-[-0.04em]">
                           {item.title}
                         </span>
                       </button>
