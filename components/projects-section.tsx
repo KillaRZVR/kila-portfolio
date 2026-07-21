@@ -1,5 +1,3 @@
-"use client";
-
 import { AnimatePresence, motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
@@ -37,9 +35,32 @@ export function ProjectsSection() {
                     </div>
                     <span className="grid size-10 shrink-0 place-items-center rounded-full border border-[#3c3c38]">{isOpen ? <Minus className="size-4" /> : <Plus className="size-4" />}</span>
                   </CardHeader>
-                  <AnimatePresence initial={false}>{isOpen && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ height: { duration: 0.3 }, opacity: { duration: 0.2 } }} className="overflow-hidden"><CardContent className="border-t border-[#3c3c38] px-0 py-4 text-sm leading-tight text-[#e4dfda]">{project.details}</CardContent></motion.div>}</AnimatePresence>
-                </Card>
-              </motion.div>
+                  <AnimatePresence initial={false}>{isOpen && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ height: { duration: 0.3 }, opacity: { duration: 0.2 } }} className="overflow-hidden">
+                    <CardContent className="border-t border-[#3c3c38] px-0 py-4 text-sm leading-tight text-[#e4dfda]">
+                      {project.details}
+                      <div className="mt-4">
+                        <h4 className="font-xanmono text-[clamp(1.2rem,2vw,1.8rem)] font-normal tracking-[-0.04em]">Roadmap</h4>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="flex flex-col">
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">Принятие задач</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">Согласование</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">Разработка</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">Согласование</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">Референс</p>
+                          </div>
+                          <div className="flex flex-col">
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">День 1</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">День 3</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">День 7</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">День 10</p>
+                            <p className="font-xanmono text-[10px] uppercase text-muted-foreground">День 14</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </motion.div>}
+                </AnimatePresence>
+              </Card>
             );
           })}
         </div>
