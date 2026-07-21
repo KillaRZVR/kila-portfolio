@@ -23,7 +23,7 @@ export function PriceSection() {
           </div>
           <div id="contacts" className="flex scroll-mt-12 flex-col items-start gap-2 lg:col-span-4">
             {contacts.map(({ label, value, href, icon: Icon }) => (
-              <a data-cursor-invert="true" key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined} className="group flex min-h-12 w-full items-center gap-3 rounded-full px-1 pr-4 transition-colors hover:bg-[#e4dfda] hover:text-[#12130f] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f5c2c8]">
+              <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined} className="group flex min-h-12 w-full items-center gap-3 rounded-full px-1 pr-4 transition-colors hover:bg-[#e4dfda] hover:text-[#12130f] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f5c2c8]">
                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-[#3c3c38] group-hover:border-[#12130f]/35"><Icon className="size-4" /></span>
                 <span className="font-telemetry text-[10px] uppercase text-muted-foreground group-hover:text-[#12130f]/60">{label}</span>
                 <span className="ml-auto text-base tracking-[-0.03em] sm:text-lg">{value}</span>
