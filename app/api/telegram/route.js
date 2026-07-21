@@ -1,5 +1,3 @@
-import { runOldestVoiceTask } from "../../../lib/cloud-task-runner.js";
-
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
@@ -14,7 +12,6 @@ function env(name, required = true) {
   if (required && !value) throw new Error(`Missing environment variable: ${name}`);
   return value || "";
 }
-
 function normalizeAudioFilename(filePath = "", preferredName = "") {
   const sourceName = preferredName || filePath.split("/").pop() || "voice.ogg";
   const dotIndex = sourceName.lastIndexOf(".");
@@ -23,31 +20,20 @@ function normalizeAudioFilename(filePath = "", preferredName = "") {
   if (!ALLOWED_AUDIO_EXTENSIONS.has(extension)) extension = ".ogg";
   return `telegram-audio${extension}`;
 }
-
 function formatStatus(description, stage, extra = "") {
   const cleanDescription = String(description || "Новая задача").trim().slice(0, 2800);
   const cleanExtra = String(extra || "").trim();
   const text = `Задача:\n${cleanDescription}\n\nСтадия: ${stage}${cleanExtra ? `\n\n${cleanExtra}` : ""}`;
   return text.length > 4000 ? `${text.slice(0, 3990)}…` : text;
 }
-
 async function telegramApi(method, payload) {
-  const response = await fetch(`${TELEGRAM_API}/bot${env("TELEGRAM_BOT_TOKEN")}/${method}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+  const response = await fetch(`${TELEGRAM_API}/bot${env("TELEGRAM_BOT_TOKEN")}/${method}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
   const data = await response.json();
   if (!response.ok || !data.ok) throw new Error(`Telegram ${method}: ${data.description || response.status}`);
   return data.result;
 }
-
 const sendMessage = (chatId, text) => telegramApi("sendMessage", { chat_id: chatId, text, disable_web_page_preview: true });
 const editMessage = (chatId, messageId, text) => telegramApi("editMessageText", { chat_id: chatId, message_id: messageId, text, disable_web_page_preview: true });
-async function deleteMessage(chatId, messageId) {
-  try { await telegramApi("deleteMessage", { chat_id: chatId, message_id: messageId }); } catch (_) {}
-}
-
 async function transcribeTelegramFile(fileId, preferredName = "") {
   const token = env("TELEGRAM_BOT_TOKEN");
   const file = await telegramApi("getFile", { file_id: fileId });
@@ -59,16 +45,11 @@ async function transcribeTelegramFile(fileId, preferredName = "") {
   form.append("model", "whisper-large-v3-turbo");
   form.append("response_format", "json");
   form.append("language", "ru");
-  const response = await fetch(`${GROQ_API}/audio/transcriptions`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${env("GROQ_API_KEY")}` },
-    body: form,
-  });
+  const response = await fetch(`${GROQ_API}/audio/transcriptions`, { method: "POST", headers: { Authorization: `Bearer ${env("GROQ_API_KEY")}` }, body: form });
   const data = await response.json();
   if (!response.ok) throw new Error(`Groq Whisper: ${data.error?.message || response.status}`);
   return String(data.text || "").trim();
 }
-
 async function createGitHubIssue(instruction, source, telegramMeta) {
   const repository = env("GITHUB_REPOSITORY", false) || "KillaRZVR/kila-portfolio";
   const compact = instruction.replace(/\s+/g, " ").trim();
@@ -83,15 +64,10 @@ async function createGitHubIssue(instruction, source, telegramMeta) {
   if (!response.ok) throw new Error(`GitHub: ${data.message || response.status}`);
   return { url: data.html_url, number: data.number };
 }
-
-function getMessage(update) {
-  return update.message || update.edited_message || update.channel_post || null;
-}
-
+function getMessage(update) { return update.message || update.edited_message || update.channel_post || null; }
 export async function GET() {
-  return Response.json({ ok: true, service: "KILA Telegram Cloud Bot", configured: { telegram: Boolean(process.env.TELEGRAM_BOT_TOKEN), groq: Boolean(process.env.GROQ_API_KEY), github: Boolean(process.env.GITHUB_TOKEN), owner: Boolean(process.env.TELEGRAM_ALLOWED_USER_ID), githubWebhook: Boolean(process.env.GITHUB_WEBHOOK_SECRET) }, commands: ["работать"] });
+  return Response.json({ ok: true, service: "KILA Telegram Cloud Bot", configured: { telegram: Boolean(process.env.TELEGRAM_BOT_TOKEN), groq: Boolean(process.env.GROQ_API_KEY), github: Boolean(process.env.GITHUB_TOKEN), owner: Boolean(process.env.TELEGRAM_ALLOWED_USER_ID), githubWebhook: Boolean(process.env.GITHUB_WEBHOOK_SECRET) } });
 }
-
 export async function POST(request) {
   const expectedSecret = env("TELEGRAM_WEBHOOK_SECRET", false);
   if (expectedSecret && (request.headers.get("x-telegram-bot-api-secret-token") || "") !== expectedSecret) return Response.json({ ok: false }, { status: 401 });
@@ -111,30 +87,9 @@ export async function POST(request) {
     }
     if (userId !== allowedUserId) return Response.json({ ok: true });
     if (text === "/start" || text === "/status") {
-      await sendMessage(chatId, "KILA Cloud Bot работает. Новые задачи запускаются автоматически; команда «работать» повторяет запуск после ошибки.");
+      await sendMessage(chatId, "KILA Cloud Bot работает. Новые задачи попадают в GitHub и проверяются агентом каждые 15 минут.");
       return Response.json({ ok: true });
     }
-
-    const normalizedCommand = text.toLocaleLowerCase("ru-RU").replace(/^\/+/, "").trim();
-    if (normalizedCommand === "работать") {
-      const launchStatus = await sendMessage(chatId, formatStatus("Очередь Telegram-задач", "поиск ожидающей задачи"));
-      try {
-        const result = await runOldestVoiceTask();
-        if (!result.found) {
-          await editMessage(chatId, launchStatus.message_id, formatStatus("Очередь Telegram-задач", "нет ожидающих задач"));
-        } else if (result.telegramMeta?.statusMessageId) {
-          await editMessage(result.telegramMeta.chatId, result.telegramMeta.statusMessageId, formatStatus(result.task, "выполнено", `${result.summary}\nCommit: ${result.commit.url}`));
-          await deleteMessage(chatId, launchStatus.message_id);
-        } else {
-          await editMessage(chatId, launchStatus.message_id, formatStatus(result.task, "выполнено", `${result.summary}\nCommit: ${result.commit.url}`));
-        }
-        await deleteMessage(chatId, message.message_id);
-      } catch (error) {
-        await editMessage(chatId, launchStatus.message_id, formatStatus("Немедленный запуск", "ошибка", error instanceof Error ? error.message : "неизвестная ошибка"));
-      }
-      return Response.json({ ok: true });
-    }
-
     const isVoice = Boolean(message.voice?.file_id || message.audio?.file_id);
     const status = await sendMessage(chatId, formatStatus(isVoice ? "Голосовая задача" : text, isVoice ? "транскрибация" : "подготовка задачи"));
     statusMessageId = status.message_id;
@@ -150,20 +105,8 @@ export async function POST(request) {
     }
     if (!instruction) throw new Error("Пустое описание задачи");
     const issue = await createGitHubIssue(instruction, source, { chatId, statusMessageId, sourceMessageId: message.message_id });
-    const plan = "Что будет сделано: анализ запроса → внесение изменений → проверка → публикация.";
-    await editMessage(chatId, statusMessageId, formatStatus(instruction, "автоматический запуск", `${plan}\nGitHub: ${issue.url}`));
-
-    try {
-      const result = await runOldestVoiceTask();
-      if (!result.found) throw new Error("Созданная задача не найдена в очереди");
-      const finalChatId = result.telegramMeta?.chatId || chatId;
-      const finalMessageId = result.telegramMeta?.statusMessageId || statusMessageId;
-      await editMessage(finalChatId, finalMessageId, formatStatus(result.task, "выполнено", `${result.summary}\nCommit: ${result.commit.url}`));
-      await deleteMessage(chatId, message.message_id);
-    } catch (runError) {
-      const details = runError instanceof Error ? runError.message : "неизвестная ошибка";
-      await editMessage(chatId, statusMessageId, formatStatus(instruction, "ожидает повторного запуска", `${plan}\nОшибка: ${details}\n\nЧтобы повторить, напиши: работать`));
-    }
+    const plan = "Что будет сделано агентом: анализ запроса → загрузка актуальных файлов → внесение изменений → проверка commit → публикация.";
+    await editMessage(chatId, statusMessageId, formatStatus(instruction, "в очереди агента", `${plan}\nGitHub: ${issue.url}\n\nПроверка очереди выполняется каждые 15 минут.`));
     return Response.json({ ok: true });
   } catch (error) {
     console.error("KILA Telegram webhook error", error);
