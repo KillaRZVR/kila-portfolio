@@ -1,8 +1,13 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { siteData } from "@/lib/data";
-function scrollToContacts() { document.getElementById("contacts")?.scrollIntoView({ behavior: "smooth" }); }
+
+function scrollToContacts() {
+  document.getElementById("contacts")?.scrollIntoView({ behavior: "smooth" });
+}
+
 export function Header() {
   return (
     <header id="top" className="relative z-40 px-4 pt-4 sm:px-6 sm:pt-5 lg:px-8">
@@ -15,7 +20,7 @@ export function Header() {
           </span>
           <motion.span initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.45 }} className="font-xanmono mt-1 block max-w-64 text-[10px] uppercase leading-tight text-muted-foreground sm:text-xs">{siteData.eyebrow}</motion.span>
         </a>
-        <Button variant="ghost" onClick={scrollToContacts} className="font-xanmono h-12 min-w-[8rem] justify-center rounded-full border border-[#3c3c38] px-3 text-[10px] uppercase text-foreground hover:bg-foreground hover:text-background sm:h-14 sm:min-w-[13rem] sm:px-8 sm:text-sm">{siteData.feedback}</Button>
+        <Button data-cursor-invert="true" variant="ghost" onClick={scrollToContacts} className="font-xanmono h-12 min-w-[8rem] justify-center rounded-full border border-[#3c3c38] px-3 text-[10px] uppercase text-foreground hover:bg-foreground hover:text-background sm:h-14 sm:min-w-[13rem] sm:px-8 sm:text-sm">{siteData.feedback}</Button>
       </div>
     </header>
   );
