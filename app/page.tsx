@@ -16,9 +16,9 @@ export default function Home() {
       <Header />
       <div className="relative z-10 px-4 sm:px-6 lg:px-8">
         <section className="relative grid min-h-[clamp(20rem,50vh,32rem)] grid-cols-1 gap-4 pb-7 pt-2 lg:grid-cols-12 lg:gap-8">
-          <div className="relative order-1 flex min-h-[17rem] items-center lg:col-span-6 lg:min-h-0">
+          <div className="relative order-1 flex min-h-[17rem] items-center lg:col-span-7 lg:min-h-0">
             <div className="absolute -inset-8 -z-10 bg-[radial-gradient(ellipse_at_left,rgba(245,194,200,0.12),transparent_64%)]" />
-            <div className="max-w-[42rem]">
+            <div className="max-w-[48rem]">
               <h1 className="font-xanmono text-balance text-[clamp(2.15rem,3.3vw,3.35rem)] font-normal leading-[1.01] tracking-[-0.05em]">
                 {siteData.heroNote}
               </h1>
@@ -27,7 +27,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="relative order-2 flex min-h-[13rem] items-center justify-center sm:min-h-[17rem] lg:col-span-6 lg:min-h-0">
+          <div className="relative order-2 flex min-h-[13rem] items-center justify-center sm:min-h-[17rem] lg:col-span-5 lg:min-h-0">
             <div className="pointer-events-none absolute inset-4 flex items-center justify-center opacity-65 sm:inset-0">
               <HeroArtifact />
             </div>
