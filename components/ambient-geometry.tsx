@@ -54,6 +54,13 @@ const floatingShapes = [
   },
 ];
 
+const kineticClusters = [
+  { className: "right-[-4rem] top-[17%] sm:right-[2%]", size: "size-44 sm:size-64", duration: 24, reverse: false },
+  { className: "left-[-5rem] top-[45%] sm:left-[2%]", size: "size-52 sm:size-72", duration: 31, reverse: true },
+  { className: "right-[-4rem] top-[72%] sm:right-[4%]", size: "size-48 sm:size-64", duration: 27, reverse: false },
+  { className: "left-[-3rem] top-[86%] sm:left-[7%]", size: "size-40 sm:size-56", duration: 22, reverse: true },
+];
+
 export function AmbientGeometry() {
   const reduceMotion = useReducedMotion();
 
@@ -61,6 +68,7 @@ export function AmbientGeometry() {
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
       <div className="absolute left-[-10rem] top-[30%] size-[24rem] rounded-full bg-[#f5c2c8]/[0.035] blur-[110px]" />
       <div className="absolute right-[-12rem] top-[68%] size-[30rem] rounded-full bg-[#f5c2c8]/[0.04] blur-[130px]" />
+      <div className="absolute left-[20%] top-[82%] size-[22rem] rounded-full bg-[#f5c2c8]/[0.025] blur-[120px]" />
 
       {floatingShapes.map((shape, index) => (
         <motion.div
@@ -69,15 +77,7 @@ export function AmbientGeometry() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.15 }}
-          animate={
-            reduceMotion
-              ? undefined
-              : {
-                  x: [0, shape.x, 0],
-                  y: [0, shape.y, 0],
-                  rotate: [0, shape.rotate, 0],
-                }
-          }
+          animate={reduceMotion ? undefined : { x: [0, shape.x, 0], y: [0, shape.y, 0], rotate: [0, shape.rotate, 0] }}
           transition={{
             opacity: { duration: 0.8, delay: index * 0.04 },
             x: { duration: shape.duration, repeat: Infinity, ease: "easeInOut" },
@@ -85,6 +85,51 @@ export function AmbientGeometry() {
             rotate: { duration: shape.duration, repeat: Infinity, ease: "easeInOut" },
           }}
         />
+      ))}
+
+      {kineticClusters.map((cluster, index) => (
+        <motion.div
+          key={cluster.className}
+          className={`absolute ${cluster.className} ${cluster.size}`}
+          initial={{ opacity: 0, scale: 0.86 }}
+          whileInView={{ opacity: 0.72, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1.1, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <motion.div
+            className="absolute inset-[14%] rotate-45 border border-[#f5c2c8]/25 bg-[#f5c2c8]/[0.025]"
+            animate={reduceMotion ? undefined : { rotate: cluster.reverse ? [45, -315] : [45, 405] }}
+            transition={{ duration: cluster.duration, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute inset-[28%] border border-[#e4dfda]/20 bg-[#f5c2c8]/[0.018]"
+            animate={reduceMotion ? undefined : { rotate: cluster.reverse ? 360 : -360, scale: [0.92, 1.08, 0.92] }}
+            transition={{ duration: cluster.duration * 0.72, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute inset-[5%] rounded-full border border-[#f5c2c8]/15"
+            animate={reduceMotion ? undefined : { rotate: cluster.reverse ? -360 : 360 }}
+            transition={{ duration: cluster.duration * 0.82, repeat: Infinity, ease: "linear" }}
+          >
+            <span className="absolute left-1/2 top-[-3px] size-1.5 -translate-x-1/2 rounded-full bg-[#f5c2c8]/80 shadow-[0_0_16px_rgba(245,194,200,0.55)]" />
+            <span className="absolute bottom-[9%] left-[16%] size-1 rotate-45 bg-[#f5c2c8]/60" />
+          </motion.div>
+          <svg className="absolute inset-0 size-full overflow-visible" viewBox="0 0 100 100" fill="none">
+            <motion.path
+              d="M8 58 C24 18, 70 10, 92 42 C72 78, 33 92, 8 58Z"
+              stroke="rgba(245,194,200,0.2)"
+              strokeWidth="0.45"
+              strokeDasharray="3 5"
+              animate={reduceMotion ? undefined : { pathLength: [0.35, 1, 0.35], opacity: [0.25, 0.7, 0.25] }}
+              transition={{ duration: cluster.duration * 0.38, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
+          <motion.span
+            className="absolute left-[47%] top-[47%] size-[6%] rotate-45 bg-[#f5c2c8]/35"
+            animate={reduceMotion ? undefined : { scale: [0.7, 1.35, 0.7], opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 3.2 + index * 0.45, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
       ))}
 
       <motion.div
