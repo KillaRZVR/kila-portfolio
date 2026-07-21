@@ -4,6 +4,7 @@ import { HeroArtifact } from "@/components/hero-artifact";
 import { HeroButtons } from "@/components/hero-buttons";
 import { PriceSection } from "@/components/price-section";
 import { ProjectsSection } from "@/components/projects-section";
+import { RoadmapSection } from "@/components/roadmap-section";
 import { siteData } from "@/lib/data";
 
 export default function Home() {
@@ -30,6 +31,7 @@ export default function Home() {
         </section>
 
         <ProjectsSection />
+        <RoadmapSection />
         <PriceSection />
         <Footer />
       </div>
