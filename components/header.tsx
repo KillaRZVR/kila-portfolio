@@ -20,7 +20,7 @@ export function Header() {
           </span>
           <motion.span initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.45 }} className="font-xanmono mt-1 block max-w-64 text-[10px] uppercase leading-tight text-muted-foreground sm:text-xs">{siteData.eyebrow}</motion.span>
         </a>
-        <Button variant="ghost" onClick={scrollToContacts} className="font-xanmono h-12 min-w-[8rem] justify-center rounded-full border border-[#3c3c38] px-3 text-[10px] uppercase text-foreground hover:bg-foreground hover:text-background sm:h-14 sm:min-w-[13rem] sm:px-8 sm:text-sm">{siteData.feedback}</Button>
+        <Button variant="ghost" onClick={scrollToContacts} className="font-xanmono h-12 min-w-[8rem] justify-center rounded-full border border-[#3c3c38] px-3 text-[10px] uppercase text-foreground transition-[border-color,box-shadow] hover:border-[#f5c2c8] hover:bg-transparent hover:text-foreground hover:shadow-[0_0_18px_rgba(245,194,200,0.2)] sm:h-14 sm:min-w-[13rem] sm:px-8 sm:text-sm">{siteData.feedback}</Button>
       </div>
     </header>
   );
