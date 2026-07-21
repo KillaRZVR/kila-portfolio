@@ -19,10 +19,6 @@ export default function Home() {
             <div className="max-w-[46rem]">
               <h1 className="font-xanmono text-balance text-[clamp(2.25rem,3.65vw,3.7rem)] font-normal leading-[0.98] tracking-[-0.05em]">{siteData.heroNote}</h1>
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">{siteData.heroSubline}</p>
-              <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-                <a href="#contacts" className="font-xanmono inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#f5c2c8] px-7 text-sm uppercase text-[#12130f] transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#12130f] sm:w-auto">{siteData.feedback}</a>
-                <span className="text-sm text-muted-foreground">{siteData.responseTime}</span>
-              </div>
             </div>
           </div>
           <div className="relative order-2 flex min-h-[14rem] items-center justify-center sm:min-h-[18rem] lg:col-span-6 lg:min-h-0">
