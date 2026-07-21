@@ -4,6 +4,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const TELEGRAM_API = "https:" + "//api.telegram.org";
+const VOICE_TASK_PREFIXES = ["[VOICE TASK]", "[VOICE CURRENT]"];
 
 function env(name) {
   const value = process.env[name]?.trim();
@@ -23,6 +24,10 @@ function parseTelegramMeta(issueBody = "") {
   const match = issueBody.match(/<!-- KILA_TELEGRAM_META\s*\n([\s\S]*?)\n-->/);
   if (!match) return null;
   try { return JSON.parse(match[1]); } catch (_) { return null; }
+}
+
+function isVoiceTaskTitle(title = "") {
+  return VOICE_TASK_PREFIXES.some((prefix) => String(title).startsWith(prefix));
 }
 
 function finalText(meta, stage, details = "") {
@@ -53,7 +58,9 @@ async function editStatus(meta, stage, details = "") {
 
 async function deleteSourceMessage(meta) {
   if (!meta.sourceMessageId) return;
-  try { await telegramApi("deleteMessage", { chat_id: meta.chatId, message_id: meta.sourceMessageId }); } catch (_) {}
+  try {
+    await telegramApi("deleteMessage", { chat_id: meta.chatId, message_id: meta.sourceMessageId });
+  } catch (_) {}
 }
 
 export async function POST(request) {
@@ -67,7 +74,7 @@ export async function POST(request) {
   const event = request.headers.get("x-github-event") || "";
   const payload = JSON.parse(rawBody);
   const issue = payload.issue;
-  if (!issue?.title?.startsWith("[VOICE TASK]")) return Response.json({ ok: true, ignored: true });
+  if (!issue || !isVoiceTaskTitle(issue.title)) return Response.json({ ok: true, ignored: true });
   const meta = parseTelegramMeta(issue.body || "");
   if (!meta) return Response.json({ ok: true, ignored: true });
 
