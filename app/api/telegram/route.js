@@ -111,7 +111,7 @@ export async function POST(request) {
     }
     if (userId !== allowedUserId) return Response.json({ ok: true });
     if (text === "/start" || text === "/status") {
-      await sendMessage(chatId, "KILA Cloud Bot работает. Пришли задачу, затем напиши «работать» для немедленного запуска.");
+      await sendMessage(chatId, "KILA Cloud Bot работает. Новые задачи запускаются автоматически; команда «работать» повторяет запуск после ошибки.");
       return Response.json({ ok: true });
     }
 
@@ -123,7 +123,7 @@ export async function POST(request) {
         if (!result.found) {
           await editMessage(chatId, launchStatus.message_id, formatStatus("Очередь Telegram-задач", "нет ожидающих задач"));
         } else if (result.telegramMeta?.statusMessageId) {
-          await editMessage(result.telegramMeta.chatId, result.telegramMeta.statusMessageId, formatStatus(result.task, "выполнено"));
+          await editMessage(result.telegramMeta.chatId, result.telegramMeta.statusMessageId, formatStatus(result.task, "выполнено", `${result.summary}\nCommit: ${result.commit.url}`));
           await deleteMessage(chatId, launchStatus.message_id);
         } else {
           await editMessage(chatId, launchStatus.message_id, formatStatus(result.task, "выполнено", `${result.summary}\nCommit: ${result.commit.url}`));
@@ -151,7 +151,19 @@ export async function POST(request) {
     if (!instruction) throw new Error("Пустое описание задачи");
     const issue = await createGitHubIssue(instruction, source, { chatId, statusMessageId, sourceMessageId: message.message_id });
     const plan = "Что будет сделано: анализ запроса → внесение изменений → проверка → публикация.";
-    await editMessage(chatId, statusMessageId, formatStatus(instruction, "ожидает выполнения", `${plan}\nGitHub: ${issue.url}\n\nДля немедленного запуска напиши: работать`));
+    await editMessage(chatId, statusMessageId, formatStatus(instruction, "автоматический запуск", `${plan}\nGitHub: ${issue.url}`));
+
+    try {
+      const result = await runOldestVoiceTask();
+      if (!result.found) throw new Error("Созданная задача не найдена в очереди");
+      const finalChatId = result.telegramMeta?.chatId || chatId;
+      const finalMessageId = result.telegramMeta?.statusMessageId || statusMessageId;
+      await editMessage(finalChatId, finalMessageId, formatStatus(result.task, "выполнено", `${result.summary}\nCommit: ${result.commit.url}`));
+      await deleteMessage(chatId, message.message_id);
+    } catch (runError) {
+      const details = runError instanceof Error ? runError.message : "неизвестная ошибка";
+      await editMessage(chatId, statusMessageId, formatStatus(instruction, "ожидает повторного запуска", `${plan}\nОшибка: ${details}\n\nЧтобы повторить, напиши: работать`));
+    }
     return Response.json({ ok: true });
   } catch (error) {
     console.error("KILA Telegram webhook error", error);
