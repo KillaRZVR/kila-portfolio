@@ -22,7 +22,7 @@ export function PriceSection() {
           </div>
           <p className="mt-5 max-w-3xl text-sm leading-relaxed text-muted-foreground">{siteData.prices.note}</p>
           <div className="mt-7 flex flex-col items-start gap-3">
-            <a href="#contacts" className="font-xanmono inline-flex min-h-12 items-center justify-center rounded-full border border-[#f5c2c8] bg-[#f5c2c8] px-6 text-sm uppercase text-[#12130f] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_0_22px_rgba(245,194,200,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#12130f]">Получить оценку проекта</a>
+            <a href="#contacts" className="font-xanmono inline-flex min-h-12 items-center justify-center rounded-full border border-[#f5c2c8] px-6 text-sm uppercase text-[#f5c2c8] transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-[#ffd9df] hover:shadow-[0_0_22px_rgba(245,194,200,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#12130f]">Получить оценку проекта</a>
             <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-sm">Итоговая стоимость фиксируется до начала работ и не меняется без согласования новых задач.</p>
           </div>
           <div id="contacts" className="mt-8 grid scroll-mt-12 gap-7 border-t border-[#3c3c38] pt-7 lg:grid-cols-12 lg:items-start">

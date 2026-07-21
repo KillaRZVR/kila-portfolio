@@ -19,38 +19,19 @@ export default function Home() {
           <div className="relative order-1 flex min-h-[17rem] items-center lg:col-span-7 lg:min-h-0">
             <div className="absolute -inset-8 -z-10 bg-[radial-gradient(ellipse_at_left,rgba(245,194,200,0.12),transparent_64%)]" />
             <div className="max-w-[48rem]">
-              <h1 className="font-xanmono text-balance text-[clamp(2.15rem,3.3vw,3.35rem)] font-normal leading-[1.01] tracking-[-0.05em]">
-                {siteData.heroNote}
-              </h1>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
-                {siteData.heroSubline}
-              </p>
+              <h1 className="font-xanmono text-balance text-[clamp(2.15rem,3.3vw,3.35rem)] font-normal leading-[1.01] tracking-[-0.05em]">{siteData.heroNote}</h1>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">{siteData.heroSubline}</p>
             </div>
           </div>
           <div className="relative order-2 flex min-h-[13rem] items-center justify-center sm:min-h-[17rem] lg:col-span-5 lg:min-h-0">
-            <div className="pointer-events-none absolute inset-4 flex items-center justify-center opacity-65 sm:inset-0">
-              <HeroArtifact />
-            </div>
-            <div className="relative z-10 ml-auto w-full max-w-[20rem]">
-              <HeroButtons />
-            </div>
+            <div className="pointer-events-none absolute inset-4 flex items-center justify-center opacity-65 sm:inset-0"><HeroArtifact /></div>
+            <div className="relative z-10 ml-auto w-full max-w-[20rem]"><HeroButtons /></div>
           </div>
         </section>
         <ProjectsSection />
-        <section
-          aria-label="Обсудить похожий проект"
-          className="flex flex-col gap-5 border-y border-[#3c3c38] py-7 sm:flex-row sm:items-center sm:justify-between"
-        >
-          <p className="max-w-xl text-lg leading-snug tracking-[-0.035em] sm:text-xl">
-            Есть похожая задача? За один разговор определим формат, сроки и
-            следующий шаг.
-          </p>
-          <a
-            href="#contacts"
-            className="font-xanmono inline-flex min-h-12 shrink-0 items-center justify-center rounded-full border border-[#f5c2c8] px-6 text-sm uppercase text-[#f5c2c8] transition-colors hover:bg-[#f5c2c8] hover:text-[#12130f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8]"
-          >
-            {siteData.feedback}
-          </a>
+        <section aria-label="Обсудить похожий проект" className="flex flex-col gap-5 border-y border-[#3c3c38] py-7 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-xl text-lg leading-snug tracking-[-0.035em] sm:text-xl">Есть похожая задача? За один разговор определим формат, сроки и следующий шаг.</p>
+          <a href="#contacts" className="font-xanmono inline-flex min-h-12 shrink-0 items-center justify-center rounded-full border border-[#f5c2c8] px-6 text-sm uppercase text-[#f5c2c8] transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-[#ffd9df] hover:shadow-[0_0_22px_rgba(245,194,200,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8]">{siteData.feedback}</a>
         </section>
         <RoadmapSection />
         <PriceSection />
