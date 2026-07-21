@@ -26,14 +26,14 @@ export function RoadmapSection() {
               {siteData.roadmap.items.map((item, index) => {
                 const isActive = item.id === activeId;
                 return (
-                  <div key={item.id} className="border-t border-[#3c3c38] first:border-t-0">
-                    <button type="button" aria-expanded={isActive} aria-controls={`roadmap-stage-${item.id}`} onClick={() => setActiveId(isActive ? 0 : item.id)} className={`grid min-h-16 w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 border-l-2 px-3 py-3 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:bg-[#f5c2c8]/[0.06] sm:grid-cols-[auto_minmax(0,1fr)_auto_auto] sm:gap-6 sm:px-4 ${isActive ? "border-l-[#f5c2c8]" : "border-l-transparent hover:bg-[#e4dfda]/[0.025]"}`}>
+                  <div key={item.id} className={`border-t transition-colors duration-200 ${isActive ? "border-[#f5c2c8]/80" : "border-[#3c3c38]"}`}>
+                    <button type="button" aria-expanded={isActive} aria-controls={`roadmap-stage-${item.id}`} onClick={() => setActiveId(isActive ? 0 : item.id)} className="grid min-h-16 w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-3 py-3 text-left transition-colors duration-200 hover:bg-[#e4dfda]/[0.025] focus-visible:outline-none focus-visible:bg-[#e4dfda]/[0.04] sm:grid-cols-[auto_minmax(0,1fr)_auto_auto] sm:gap-6 sm:px-4">
                       <span className="font-telemetry text-sm text-[#f5c2c8]">{String(index + 1).padStart(2, "0")}</span>
                       <span className="min-w-0"><span className="block text-base leading-tight tracking-[-0.035em] sm:text-lg">{item.title}</span><span className="mt-1 block text-sm leading-snug text-muted-foreground">{item.summary}</span><span className="font-telemetry mt-2 block text-sm text-muted-foreground sm:hidden">{item.duration}</span></span>
                       <span className="font-telemetry hidden text-sm text-muted-foreground sm:block">{item.duration}</span>
                       <span className="text-lg text-[#f5c2c8]" aria-hidden="true">{isActive ? "↗" : "↘"}</span>
                     </button>
-                    {isActive && <div id={`roadmap-stage-${item.id}`} className="border-l-2 border-l-[#f5c2c8] bg-[#f5c2c8]/[0.06] px-5 pb-5 pt-1 sm:px-16"><div className="mb-3 flex flex-wrap gap-x-5 gap-y-2">{item.steps.map((step) => <span key={step} className="font-telemetry text-xs uppercase text-[#f5c2c8]">{step}</span>)}</div><p className="max-w-3xl text-sm leading-relaxed text-[#e4dfda]">{item.description}</p><p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground"><span className="text-[#f5c2c8]">Результат:</span>{" "}{item.result}</p></div>}
+                    {isActive && <div id={`roadmap-stage-${item.id}`} className="px-5 pb-5 pt-1 sm:px-16"><div className="mb-3 flex flex-wrap gap-x-5 gap-y-2">{item.steps.map((step) => <span key={step} className="font-telemetry text-xs uppercase text-muted-foreground">{step}</span>)}</div><p className="max-w-3xl text-sm leading-relaxed text-[#e4dfda]">{item.description}</p><p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground"><span className="text-[#f5c2c8]">Результат:</span>{" "}{item.result}</p></div>}
                   </div>
                 );
               })}

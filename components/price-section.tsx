@@ -21,6 +21,14 @@ export function PriceSection() {
             {siteData.prices.items.map((item) => <article key={item.title} className="bg-[#12130f] p-5"><p className="font-telemetry text-xs uppercase text-muted-foreground">{item.duration}</p><h3 className="mt-4 text-xl tracking-[-0.04em] sm:text-2xl">{item.title}</h3><p className="mt-2 text-lg text-[#f5c2c8] sm:text-xl">{item.price}</p><p className="mt-4 text-sm leading-relaxed text-muted-foreground">{item.description}</p></article>)}
           </div>
           <p className="mt-5 max-w-3xl text-sm leading-relaxed text-muted-foreground">{siteData.prices.note}</p>
+          <div className="mt-7 flex flex-col items-start gap-3">
+            <a href="#contacts" className="font-xanmono inline-flex min-h-12 items-center justify-center rounded-full border border-[#f5c2c8] bg-[#f5c2c8] px-6 text-sm uppercase text-[#12130f] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_0_22px_rgba(245,194,200,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8] focus-visible:ring-offset-2 focus-visible:ring-offset-[#12130f]">
+              Получить оценку проекта
+            </a>
+            <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-sm">
+              Итоговая стоимость фиксируется до начала работ и не меняется без согласования новых задач.
+            </p>
+          </div>
           <div id="contacts" className="mt-8 grid scroll-mt-12 gap-7 border-t border-[#3c3c38] pt-7 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-5"><p className="text-xl leading-snug tracking-[-0.04em] sm:text-2xl">Готовы обсудить задачу?</p><p className="mt-2 text-sm text-muted-foreground">{siteData.responseTime}</p></div>
             <div className="flex flex-col gap-2 lg:col-span-7">
