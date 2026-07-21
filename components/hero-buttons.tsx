@@ -3,7 +3,14 @@ import { ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { siteData } from "@/lib/data";
 export function HeroButtons() {
-  const scrollTo = (target: string) => document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (target: string) => {
+    const section = document.getElementById(target);
+    if (!section) return;
+
+    const roadmapOffset = target === "roadmap" ? 120 : 0;
+    const top = section.getBoundingClientRect().top + window.scrollY + roadmapOffset;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
   return (
     <nav aria-label="Навигация по странице" className="grid w-full border-t border-[#3c3c38] bg-[#12130f]/35 px-3 backdrop-blur-sm">
       {siteData.navigation.map((item) => (
