@@ -14,7 +14,7 @@ export default function Home() {
         <section className="relative grid min-h-[clamp(22rem,62vh,38rem)] grid-cols-1 gap-6 pb-8 pt-2 lg:grid-cols-12 lg:grid-rows-[1fr_auto]">
           <div className="relative order-1 flex min-h-[18rem] items-center lg:col-span-6 lg:row-span-2 lg:min-h-0">
             <div className="absolute -inset-8 -z-10 bg-[radial-gradient(ellipse_at_left,rgba(245,194,200,0.12),transparent_64%)]" />
-            <h1 className="font-xanmono text-balance max-w-[45rem] text-[clamp(2.25rem,3.75vw,3.75rem)] font-normal leading-[0.96] tracking-[-0.055em]">
+            <h1 className="font-xanmono text-balance max-w-[45rem] text-[clamp(2.5rem,3.75vw,3.75rem)] font-normal leading-[0.96] tracking-[-0.055em]">
               {siteData.heroNote}
             </h1>
           </div>

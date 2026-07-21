@@ -13,7 +13,7 @@ export function Header() {
     <header id="top" className="relative z-40 px-4 pt-4 sm:px-6 sm:pt-5 lg:px-8">
       <div className="flex items-start justify-between gap-6">
         <a href="#top" className="block w-[58vw] sm:w-[36vw] lg:w-[25vw] lg:max-w-[28rem]" aria-label="На главную">
-          <span className="flex overflow-hidden text-[clamp(4.3rem,10vw,9.5rem)] font-normal leading-[0.72] tracking-[-0.11em]">
+          <span className="flex overflow-hidden text-[clamp(4.8rem,10vw,9.5rem)] font-normal leading-[0.72] tracking-[-0.11em]">
             {siteData.brand.split("").map((letter, index) => (
               <motion.span
                 key={`${letter}-${index}`}
@@ -30,7 +30,7 @@ export function Header() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.5 }}
-            className="font-telemetry mt-3 block max-w-60 text-[11px] uppercase leading-tight text-muted-foreground sm:text-xs"
+            className="font-telemetry mt-3 block max-w-60 text-[12px] uppercase leading-tight text-muted-foreground sm:text-xs"
           >
             {siteData.eyebrow}
           </motion.span>
