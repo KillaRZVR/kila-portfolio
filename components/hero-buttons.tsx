@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { siteData } from "@/lib/data";
 export function HeroButtons() {
   const scrollTo = (target: string) => {
-    const section = document.getElementById(target);
-    if (!section) return;
-
-    const roadmapOffset = target === "roadmap" ? 120 : 0;
-    const top = section.getBoundingClientRect().top + window.scrollY + roadmapOffset;
-    window.scrollTo({ top, behavior: "smooth" });
+    const element = document.getElementById(target);
+    if (!element) return;
+    if (target === "roadmap") {
+      const offset = Math.min(220, window.innerHeight * 0.22);
+      window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY + offset, behavior: "smooth" });
+      return;
+    }
+    element.scrollIntoView({ behavior: "smooth" });
   };
   return (
     <nav aria-label="Навигация по странице" className="grid w-full border-t border-[#3c3c38] bg-[#12130f]/35 px-3 backdrop-blur-sm">
