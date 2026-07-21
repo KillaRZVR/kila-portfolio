@@ -1,3 +1,4 @@
+import { AmbientGeometry } from "@/components/ambient-geometry";
 import { FAQSection } from "@/components/faq-section";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -10,9 +11,10 @@ import { siteData } from "@/lib/data";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden">
+    <main className="relative isolate min-h-screen overflow-hidden">
+      <AmbientGeometry />
       <Header />
-      <div className="px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8">
         <section className="relative grid min-h-[clamp(20rem,52vh,34rem)] grid-cols-1 gap-4 pb-8 pt-2 lg:grid-cols-12 lg:gap-8">
           <div className="relative order-1 flex min-h-[18rem] items-center lg:col-span-6 lg:min-h-0">
             <div className="absolute -inset-8 -z-10 bg-[radial-gradient(ellipse_at_left,rgba(245,194,200,0.12),transparent_64%)]" />
