@@ -36,10 +36,6 @@ export default function Home() {
           </div>
         </section>
         <ProjectsSection />
-        <section aria-label="Обсудить похожий проект" className="flex flex-col gap-5 border-y border-[#3c3c38] py-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="max-w-xl text-lg leading-snug tracking-[-0.035em] sm:text-xl">Есть похожая задача? За один разговор определим формат, сроки и следующий шаг.</p>
-          <a href="#contacts" className="font-xanmono inline-flex min-h-12 shrink-0 items-center justify-center rounded-full border border-[#f5c2c8] px-6 text-sm uppercase text-[#f5c2c8] transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-[#ffd9df] hover:shadow-[0_0_22px_rgba(245,194,200,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8]">{siteData.feedback}</a>
-        </section>
         <RoadmapSection />
         <PriceSection />
         <FAQSection />

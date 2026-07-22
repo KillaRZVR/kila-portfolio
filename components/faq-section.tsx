@@ -14,10 +14,6 @@ export function FAQSection() {
             {siteData.faq.items.map((item, index) => <details key={item.question} className="group py-1"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-4 py-3 text-base leading-snug focus-visible:outline-none focus-visible:text-[#f5c2c8]"><span className="font-telemetry text-xs text-muted-foreground">{String(index + 1).padStart(2, "0")}</span><span>{item.question}</span><span className="ml-auto text-xl text-[#f5c2c8] transition-transform group-open:rotate-45">+</span></summary><p className="pb-4 pl-9 pr-8 text-sm leading-relaxed text-muted-foreground">{item.answer}</p></details>)}
           </div>
         </div>
-        <div className="mt-10 flex flex-col gap-5 border-t border-[#3c3c38] pt-7 sm:flex-row sm:items-center sm:justify-between">
-          <div><p className="text-xl leading-snug tracking-[-0.04em] sm:text-2xl">Расскажите о задаче</p><p className="mt-2 text-sm text-muted-foreground">{siteData.responseTime}</p></div>
-          <a href="#contacts" className="font-xanmono inline-flex min-h-12 shrink-0 items-center justify-center rounded-full border border-[#f5c2c8] px-6 text-sm uppercase text-[#f5c2c8] transition-[transform,box-shadow,border-color] hover:-translate-y-0.5 hover:border-[#ffd9df] hover:shadow-[0_0_22px_rgba(245,194,200,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c2c8]">Обсудить проект</a>
-        </div>
       </RevealSection>
     </section>
   );
