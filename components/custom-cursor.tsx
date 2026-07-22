@@ -18,8 +18,8 @@ export function CustomCursor() {
     let visible = false;
 
     const render = () => {
-      current.x += (target.x - current.x) * 0.2;
-      current.y += (target.y - current.y) * 0.2;
+      current.x += (target.x - current.x) * 0.72;
+      current.y += (target.y - current.y) * 0.72;
       cursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0)`;
       frameId = window.requestAnimationFrame(render);
     };
