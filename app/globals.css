@@ -126,7 +126,7 @@
   background: #12130f;
   color: #e4dfda;
   box-shadow: 0 4px 18px rgba(18, 19, 15, 0.35);
-  animation: custom-cursor-core-in 180ms ease both;
+  animation: custom-cursor-core-in 180ms ease;
 }
 @keyframes custom-cursor-core-in {
   from { opacity: 0; transform: translate(-50%, -50%) scale(0.75); }
